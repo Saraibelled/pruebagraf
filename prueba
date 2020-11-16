@@ -1,0 +1,304 @@
+<script type="text/javascript">
+    (function() {
+        // only want one resizer on the page
+        if (document.documentElement.className.indexOf("g-resizer-v3-init") > -1) return;
+        document.documentElement.className += " g-resizer-v3-init";
+        // require IE9+
+        if (!("querySelector" in document)) return;
+        function resizer() {
+            var elements = Array.prototype.slice.call(document.querySelectorAll(".g-artboard[data-min-width]")),
+                widthById = {};
+            elements.forEach(function(el) {
+                var parent = el.parentNode,
+                    width = widthById[parent.id] || parent.getBoundingClientRect().width,
+                    minwidth = el.getAttribute("data-min-width"),
+                    maxwidth = el.getAttribute("data-max-width");
+                widthById[parent.id] = width;
+
+                if (+minwidth <= width && (+maxwidth >= width || maxwidth === null)) {
+                    el.style.display = "block";
+                } else {
+                    el.style.display = "none";
+                }
+            });
+            try {
+                if (window.parent && window.parent.$) {
+                    window.parent.$("body").trigger("resizedcontent", [window]);
+                }
+                if (window.require) {
+                    require(['foundation/main'], function() {
+                        require(['shared/interactive/instances/app-communicator'], function(AppCommunicator) {
+                            AppCommunicator.triggerResize();
+                        });
+                    });
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        document.addEventListener('DOMContentLoaded', resizer);
+        // feel free to replace throttle with _.throttle, if available
+        window.addEventListener('resize', throttle(resizer, 200));        
+
+        function throttle(func, wait) {
+            // from underscore.js
+            var _now = Date.now || function() { return new Date().getTime(); },
+                context, args, result, timeout = null, previous = 0;
+            var later = function() {
+                previous = _now();
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+            return function() {
+                var now = _now(), remaining = wait - (now - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    previous = now;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    timeout = setTimeout(later, remaining);
+                }
+                return result;
+            };
+        }
+
+       
+    })();
+</script>
+<style media="screen,print">
+	#g-pruebawebcalefaccion-box ,
+	#g-pruebawebcalefaccion-box .g-artboard {
+		margin:0 auto;
+	}
+	#g-pruebawebcalefaccion-box p {
+		margin:0;
+	}
+	#g-pruebawebcalefaccion-box .g-aiAbs {
+		position:absolute;
+	}
+	#g-pruebawebcalefaccion-box .g-aiImg {
+		position:absolute;
+		top:0;
+		display:block;
+		width:100% !important;
+	}
+	#g-pruebawebcalefaccion-box .g-aiSymbol {
+		position: absolute;
+		box-sizing: border-box;
+	}
+	#g-pruebawebcalefaccion-box .g-aiPointText p { white-space: nowrap; }
+	#g-pruebawebcalefaccion-movil {
+		position:relative;
+		overflow:hidden;
+	}
+	#g-pruebawebcalefaccion-movil p {
+		font-family:GuardianSans-Regular,'times new roman';
+		line-height:18px;
+		filter:alpha(opacity=100);
+		-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+		opacity:1;
+		letter-spacing:0em;
+		font-size:15px;
+		text-align:left;
+		color:rgb(0,0,0);
+		text-transform:none;
+		padding-bottom:0;
+		padding-top:0;
+		mix-blend-mode:normal;
+		font-style:normal;
+		height:auto;
+		position:static;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle0 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:25px;
+		font-size:21px;
+		text-align:center;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle1 {
+		text-align:center;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle2 {
+		line-height:32px;
+		font-size:14px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle3 {
+		line-height:32px;
+		height:32px;
+		font-size:14px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle4 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:32px;
+		height:32px;
+		font-size:14px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle5 {
+		line-height:21px;
+		font-size:13px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-movil .g-pstyle6 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:21px;
+		font-size:13px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-movil .g-cstyle0 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+	}
+	#g-pruebawebcalefaccion-movil .g-cstyle1 {
+		font-family:GuardianSans-Regular,'times new roman';
+	}
+	#g-pruebawebcalefaccion-desktop {
+		position:relative;
+		overflow:hidden;
+	}
+	#g-pruebawebcalefaccion-desktop p {
+		font-family:GuardianSans-Regular,'times new roman';
+		line-height:17px;
+		filter:alpha(opacity=100);
+		-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+		opacity:1;
+		letter-spacing:0em;
+		font-size:14px;
+		text-align:left;
+		color:rgb(0,0,0);
+		text-transform:none;
+		padding-bottom:0;
+		padding-top:0;
+		mix-blend-mode:normal;
+		font-style:normal;
+		height:auto;
+		position:static;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle0 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:25px;
+		font-size:21px;
+		text-align:center;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle1 {
+		line-height:32px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle2 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:32px;
+		height:32px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle3 {
+		line-height:32px;
+		height:32px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle4 {
+		text-align:center;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle5 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:39px;
+		font-size:32px;
+		text-align:center;
+	}
+	#g-pruebawebcalefaccion-desktop .g-pstyle6 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+		line-height:32px;
+		text-align:right;
+	}
+	#g-pruebawebcalefaccion-desktop .g-cstyle0 {
+		font-family:GuardianSans-Bold,'times new roman';
+		font-weight:bold;
+	}
+	#g-pruebawebcalefaccion-desktop .g-cstyle1 {
+		font-family:GuardianSans-Regular,'times new roman';
+	}
+
+</style>
+
+<div id="g-pruebawebcalefaccion-box" class="ai2html">
+
+	<!-- Artboard: movil -->
+	<div id="g-pruebawebcalefaccion-movil" class="g-artboard" style="max-width: 320px;max-height: 802px" data-aspect-ratio="0.399" data-min-width="0" data-max-width="623">
+<div style="padding: 0 0 250.625% 0;"></div>
+		<img id="g-pruebawebcalefaccion-movil-img" class="g-aiImg" alt="" src="pruebawebcalefaccion-movil.png"/>
+		<div id="g-ai0-1" class="g-BASE g-aiAbs" style="top:0.9975%;left:50.1563%;margin-left:-49.8437%;width:99.6875%;">
+			<p class="g-pstyle0">Gasto anual en calefacción</p>
+		</div>
+		<div id="g-ai0-2" class="g-BASE g-aiAbs" style="top:6.4838%;left:50.2341%;margin-left:-45.7812%;width:91.5625%;">
+			<p class="g-pstyle1">Con la temperatura recomendada de <span class="g-cstyle0">21-23&ordm;C</span></p>
+		</div>
+		<div id="g-ai0-3" class="g-BASE g-aiAbs" style="top:11.4713%;right:50.908%;width:42.8125%;">
+			<p class="g-pstyle2">Eléctrica <span class="g-cstyle0">688 euros</span></p>
+		</div>
+		<div id="g-ai0-4" class="g-BASE g-aiAbs g-aiPointText" style="top:15.9238%;margin-top:-16.7px;right:71.4066%;width:70px;">
+			<p class="g-pstyle3">Gasóleo</p>
+		</div>
+		<div id="g-ai0-5" class="g-BASE g-aiAbs g-aiPointText" style="top:15.931%;margin-top:-16.8px;right:50.8646%;width:85px;">
+			<p class="g-pstyle4">577 euros</p>
+		</div>
+		<div id="g-ai0-6" class="g-BASE g-aiAbs g-aiPointText" style="top:18.6741%;margin-top:-16.8px;right:50.8978%;width:152px;">
+			<p class="g-pstyle3">Gas natural <span class="g-cstyle0">317 euros</span></p>
+		</div>
+		<div id="g-ai0-7" class="g-BASE g-aiAbs" style="top:53.3666%;left:50.2234%;margin-left:-47.6562%;width:95.3125%;">
+			<p class="g-pstyle1">Incremento al subir<span class="g-cstyle0"> un grado </span></p>
+			<p class="g-pstyle1">la temperatura de la calefacción</p>
+		</div>
+		<div id="g-ai0-8" class="g-BASE g-aiAbs" style="top:60.7232%;right:50.3125%;width:39.375%;">
+			<p class="g-pstyle5">Eléctrica <span class="g-cstyle0">736 euros</span></p>
+			<p class="g-pstyle6"><span class="g-cstyle1">Gasóleo</span> 617 euros</p>
+			<p class="g-pstyle5">Gas natural<span class="g-cstyle0"> 339 euros</span></p>
+		</div>
+	</div>
+
+	<!-- Artboard: desktop -->
+	<div id="g-pruebawebcalefaccion-desktop" class="g-artboard" style="width:624px; height:1186px;" data-aspect-ratio="0.526" data-min-width="624">
+<div style=""></div>
+		<img id="g-pruebawebcalefaccion-desktop-img" class="g-aiImg" alt="" src="pruebawebcalefaccion-desktop.png"/>
+		<div id="g-ai1-1" class="g-BASE g-aiAbs" style="top:2.5295%;left:50.2764%;margin-left:-39.6635%;width:79.3269%;">
+			<p class="g-pstyle0">Gasto anual en calefacción</p>
+		</div>
+		<div id="g-ai1-2" class="g-BASE g-aiAbs" style="top:7.9258%;right:49.9048%;width:21.9551%;">
+			<p class="g-pstyle1">Eléctrica <span class="g-cstyle0">688 euros</span></p>
+		</div>
+		<div id="g-ai1-3" class="g-BASE g-aiAbs g-aiPointText" style="top:11.869%;margin-top:-16.8px;right:49.9566%;width:135px;">
+			<p class="g-pstyle2"><span class="g-cstyle1">Gasóleo </span>577 euros</p>
+		</div>
+		<div id="g-ai1-4" class="g-BASE g-aiAbs g-aiPointText" style="top:14.8201%;margin-top:-16.8px;right:49.8995%;width:152px;">
+			<p class="g-pstyle3">Gas natural <span class="g-cstyle0">317 euros</span></p>
+		</div>
+		<div id="g-ai1-5" class="g-BASE g-aiAbs" style="top:18.2125%;left:20.9177%;margin-left:-9.1346%;width:18.2692%;">
+			<p class="g-pstyle4">Con la temperatura recomendada de</p>
+		</div>
+		<div id="g-ai1-6" class="g-BASE g-aiAbs" style="top:21.4165%;left:20.8671%;margin-left:-10.016%;width:20.0321%;">
+			<p class="g-pstyle5">21-23&ordm;C</p>
+		</div>
+		<div id="g-ai1-7" class="g-BASE g-aiAbs" style="top:55.312%;right:50.6244%;width:21.9551%;">
+			<p class="g-pstyle1">Eléctrica <span class="g-cstyle0">736 euros</span></p>
+			<p class="g-pstyle6"><span class="g-cstyle1">Gasóleo</span> 617 euros</p>
+			<p class="g-pstyle1">Gas natural<span class="g-cstyle0"> 339 euros</span></p>
+		</div>
+		<div id="g-ai1-8" class="g-BASE g-aiAbs" style="top:64.6712%;left:19.876%;margin-left:-8.0929%;width:16.1859%;">
+			<p class="g-pstyle4">Incremento al subir <span class="g-cstyle0">un grado </span>la temperatura de la calefacción</p>
+		</div>
+	</div>
+
+</div>
